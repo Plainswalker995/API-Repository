@@ -57,10 +57,10 @@ function displayResults(json) {
     section.appendChild(pokeData);
 
     // Create an image tag and add the sprite url as the source
-    let pokeSpritestring = ''
-    for (let sprite of pokeSpritestring) {
-        console.log(Sprite)
-        pokeTypestring += `${sprite.sprite.img}, `
-    }
+   pokeSpriteurl = (json.sprites.front_default); {
+       let pokeimg = document.createElement("img");
+       pokeimg.setAttribute('src', 'pokeSpriteSrcUrl');
+       section.appendChild(pokeimg)
+   }
  
 }
