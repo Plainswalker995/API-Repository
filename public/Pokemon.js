@@ -2,8 +2,7 @@ const baseURL = "https://pokeapi.co/api/v2/pokemon/"
 let url;
 
 const searchTerm = document.querySelector('.search');
-const startnumber = document.querySelector('.start-number');
-const endNumber = document.querySelector('.end-number')
+let currentNumber;
 const submitBtn = document.querySelector('.submit')
 const searchForm = document.querySelector('form')
 
@@ -15,6 +14,8 @@ const section = document.querySelector('section')
 let displayNav = false;
 
 searchForm.addEventListener('submit', fetchResults);
+nextBtn.addEventListener('click', fetchNext);
+previousBtn.addEventListener('click', fetchPrevious);
 
 function fetchResults(e) {
     e.preventDefault();
@@ -28,7 +29,33 @@ function fetchResults(e) {
     })
 }
 
+function fetchPrevious(e) {
+    let previousNumber = currentNumber - 1;
+    e.preventDefault();
+    url = baseURL + previousNumber;
+    console.log('URL: ', url)
+    
+    fetch(url).then(function(result) {
+        return result.json();
+    }).then(function(json) {
+        displayResults(json);
+    }) }
+
+    function fetchNext(e) {
+        let nextNumber = currentNumber + 1;
+        e.preventDefault();
+        url = baseURL + nextNumber;
+        console.log('URL: ', url)
+        
+        fetch(url).then(function(result) {
+            return result.json();
+        }).then(function(json) {
+            displayResults(json);
+        }) }
+
 function displayResults(json) {
+    section.innerHTML="";
+    // debugger;
     console.log(json)
 
     let pokeName = json.name;
@@ -57,10 +84,17 @@ function displayResults(json) {
     section.appendChild(pokeData);
 
     // Create an image tag and add the sprite url as the source
-   pokeSpriteurl = (json.sprites.front_default); {
-       let pokeimg = document.createElement("img");
-       pokeimg.setAttribute('src', 'pokeSpriteSrcUrl');
-       section.appendChild(pokeimg)
-   }
- 
+  if(json.sprites.front_default) {  let pokeSpriteUrl = json.sprites.front_default;
+    let pokeimg = document.createElement("img");
+    pokeimg.setAttribute('src', pokeSpriteUrl );
+    section.appendChild(pokeimg);
+  }
+    currentNumber = json.id;
+    if(json.id == 1){ 
+        previousBtn.style.display = 'none' 
+    } else previousBtn.style.display = 'block';
+
+    if (json.id == 808) {
+        nextBtn.style.display = 'none'
+    } 
 }
